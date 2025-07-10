@@ -1,171 +1,55 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Meu Chá de Casa Nova</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Open Sans', sans-serif;
-      background-color: #ffffff;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-    }
-    h1 {
-      font-family: 'Great Vibes', cursive;
-      background-color: #556b2f;
-      color: white;
-      padding: 20px;
-      margin: 0;
-      font-size: 3em;
-    }
-    .search-box, .rsvp-box {
-      margin: 20px auto;
-      padding: 20px;
-      background: #f9f9f9;
-      border-radius: 8px;
-      max-width: 500px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
-    input, button, textarea {
-      padding: 10px;
-      margin: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      width: calc(100% - 22px);
-      font-family: 'Open Sans', sans-serif;
-    }
-    button {
-      background-color: #556b2f;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #445522;
-    }
-    .gift-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 20px;
-    }
-    .gift-card {
-      background-color: #fff;
-      border: 2px solid #556b2f;
-      border-radius: 10px;
-      margin: 10px;
-      padding: 15px;
-      width: 250px;
-      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .gift-card.unavailable {
-      background-color: #eee;
-      border-color: #999;
-      opacity: 0.6;
-    }
-    .gift-card img {
-      max-width: 100%;
-      border-radius: 5px;
-    }
-    .status-button {
-      margin-top: 10px;
-      background-color: #8b0000;
-    }
-    .status-button:hover {
-      background-color: #660000;
-    }
-    .share-btn {
-      margin-top: 10px;
-      background-color: #25d366;
-    }
-  </style>
-</head>
-<body>
-  <h1>Meu Chá de Casa Nova</h1>
+<script>
+  const API_URL = "https://script.google.com/macros/s/AKfycbz1pYybOV6YJ2YZl9laB3sqdLGDgNxz86_A3SIayyxfzgCxgtU5MgqRWaDsxj9F03YV/exec";
+  const list = document.getElementById('giftList');
+  const searchInput = document.getElementById('searchInput');
+  let gifts = [];
 
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Buscar presente por nome...">
-  </div>
+  async function carregarPresentes() {
+    const res = await fetch(API_URL);
+    gifts = await res.json();
+    renderGifts();
+  }
 
-  <div class="gift-list" id="giftList"></div>
-
-  <div class="rsvp-box">
-    <h2>Confirmação de Presença</h2>
-    <input type="text" id="guestName" placeholder="Seu nome"><br>
-    <textarea id="guestMessage" placeholder="Deixe uma mensagem..."></textarea><br>
-    <button onclick="confirmarPresenca()">Confirmar presença</button>
-    <p id="confirmMsg" style="margin-top: 10px; color: #2e7d32;"></p>
-  </div>
-
-  <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbz1pYybOV6YJ2YZl9laB3sqdLGDgNxz86_A3SIayyxfzgCxgtU5MgqRWaDsxj9F03YV/exec";
-    const list = document.getElementById('giftList');
-    const searchInput = document.getElementById('searchInput');
-    let gifts = [];
-
-    async function carregarPresentes() {
-      const res = await fetch(API_URL);
-      gifts = await res.json();
-      renderGifts();
-    }
-
-    function renderGifts() {
-      const query = searchInput.value.toLowerCase();
-      list.innerHTML = '';
-      gifts.forEach((gift, index) => {
-        if (!gift.nome.toLowerCase().includes(query)) return;
-        const card = document.createElement('div');
-        card.className = 'gift-card' + (gift.indisponivel === true || gift.indisponivel === "true" ? ' unavailable' : '');
-        card.innerHTML = `
-          <img src="${gift.imagem}" alt="${gift.nome}">
-          <h3>${gift.nome}</h3>
-          <a href="${gift.link}" target="_blank">Ver presente</a><br>
-          <button class="status-button">${gift.indisponivel === "true" || gift.indisponivel === true ? 'Marcar como Disponível' : 'Marcar como Indisponível'}</button>
-          <button class="share-btn" onclick="compartilharWhatsApp('${gift.nome}', '${gift.link}')">Compartilhar no WhatsApp</button>
-        `;
-        const statusBtn = card.querySelector('.status-button');
-        statusBtn.addEventListener('click', () => {
-          gifts[index].indisponivel = !(gift.indisponivel === "true" || gift.indisponivel === true);
-          atualizarDisponibilidade(gift.nome, gifts[index].indisponivel);
-        });
-        list.appendChild(card);
+  function renderGifts() {
+    const query = searchInput.value.toLowerCase();
+    list.innerHTML = '';
+    gifts.forEach((gift, index) => {
+      if (!gift.nome.toLowerCase().includes(query)) return;
+      const card = document.createElement('div');
+      card.className = 'gift-card' + (gift.indisponivel === true || gift.indisponivel === "true" ? ' unavailable' : '');
+      card.innerHTML = `
+        <img src="${gift.imagem}" alt="${gift.nome}">
+        <h3>${gift.nome}</h3>
+        <a href="${gift.link}" target="_blank">Ver presente</a><br>
+        <button class="status-button">${gift.indisponivel === "true" || gift.indisponivel === true ? 'Marcar como Disponível' : 'Marcar como Indisponível'}</button>
+        <button class="share-btn" onclick="compartilharWhatsApp('${gift.nome}', '${gift.link}')">Compartilhar no WhatsApp</button>
+      `;
+      const statusBtn = card.querySelector('.status-button');
+      statusBtn.addEventListener('click', () => {
+        gifts[index].indisponivel = !(gift.indisponivel === "true" || gift.indisponivel === true);
+        atualizarDisponibilidade(gift.nome, gifts[index].indisponivel);
       });
-    }
+      list.appendChild(card);
+    });
+  }
 
-    async function atualizarDisponibilidade(nome, indisponivel) {
-      await fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify({ nome, indisponivel }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      carregarPresentes(); // Recarrega após atualizar
-    }
+  async function atualizarDisponibilidade(nome, indisponivel) {
+    await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ nome, indisponivel }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    carregarPresentes(); // Recarrega tudo após salvar
+  }
 
-    function confirmarPresenca() {
-      const name = document.getElementById('guestName').value.trim();
-      const msg = document.getElementById('guestMessage').value.trim();
-      if (name === '') return alert('Digite seu nome!');
-      document.getElementById('confirmMsg').innerText = `Obrigada pela confirmação, ${name}!`;
-      document.getElementById('guestName').value = '';
-      document.getElementById('guestMessage').value = '';
-    }
+  function compartilharWhatsApp(nome, link) {
+    const mensagem = `Olha esse presente na minha lista de Chá de Casa Nova: ${nome} - ${link}`;
+    const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+    window.open(url, '_blank');
+  }
 
-    function compartilharWhatsApp(nome, link) {
-      const mensagem = `Olha esse presente na minha lista de Chá de Casa Nova: ${nome} - ${link}`;
-      const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
-      window.open(url, '_blank');
-    }
-
-    searchInput.addEventListener('keyup', renderGifts);
-    carregarPresentes();
-  </script>
-</body>
-</html>
-
-
+  searchInput.addEventListener('keyup', renderGifts);
+  carregarPresentes();
+</script>
