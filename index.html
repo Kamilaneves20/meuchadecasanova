@@ -113,7 +113,152 @@
     const form = document.getElementById('giftForm');
     const list = document.getElementById('giftList');
     const searchInput = document.getElementById('searchInput');
-    let gifts = JSON.parse(localStorage.getItem('gifts')) || [];
+    let gifts = [
+  {
+    name: "Geladeira",
+    link: "https://loja.electrolux.com.br/geladeira-electrolux-frost-free-431l-efficient-autosense-duplex-inox-look--tf70s-/p?skuId=310127950",
+    image: "https://electrolux.vtexassets.com/arquivos/ids/266192-800-800?v=638705614508400000&width=800&height=800&aspect=true",
+    unavailable: false
+  },
+  {
+    name: "Fogão",
+    link: "https://www.consul.com.br/fogao-de-piso-consul-4-bocas-com-manipulos-removiveis-cfo4nar/p?idsku=1479",
+    image: "https://consul.vtexassets.com/arquivos/ids/245663-800-800?v=638870621547570000&width=800&height=800&aspect=true",
+    unavailable: false
+  },
+  {
+    name: "Microondas",
+    link: "https://loja.electrolux.com.br/micro-ondas-tira-odor-electrolux-mt30s/p?skuId=2001808",
+    image: "https://electrolux.vtexassets.com/arquivos/ids/223167-800-800?v=638796393208630000&width=800&height=800&aspect=true",
+    unavailable: false
+  },
+  {
+    name: "Air Fryer",
+    link: "https://www.casasbahia.com.br/fritadeira-eletrica-air-fryer-philips-walita-serie-1000-xl-na130-sem-oleo-1700w-62l-preta/p/55067673",
+    image: "https://imgs.casasbahia.com.br/55067673/2g.jpg?imwidth=500",
+    unavailable: false
+  },
+  {
+    name: "Máquina de Lavar",
+    link: "https://www.carrefour.com.br/maquina-de-lavar-panasonic-12-kg-titanio-naf120b1tb-220v-6216773/p",
+    image: "https://carrefourbr.vtexassets.com/arquivos/ids/159736810/31566df943334042a2061d73982c1ab1.jpg?v=638857816012970000",
+    unavailable: false
+  },
+  {
+    name: "Panela de Pressão",
+    link: "https://www.casasbahia.com.br/panela-de-pressao-45l-panelux-magnific-em-aluminio-com-antiaderente-ptfe-grafite/p/55061374",
+    image: "https://imgs.casasbahia.com.br/55061374/1g.jpg?imwidth=500",
+    unavailable: false
+  },
+  {
+    name: "Liquidificador",
+    link: "https://www.extra.com.br/liquidificador-oster-1400w-full-preto-32l-oliq610/p/55012567",
+    image: "https://imgs.extra.com.br/55012567/1g.jpg?imwidth=500",
+    unavailable: false
+  },
+  {
+    name: "Misteira",
+    link: "https://www.amazon.com.br/Sanduicheira-Master-Grill-Inox-S-20/dp/B084XRBHB8",
+    image: "https://m.media-amazon.com/images/I/61eGDtwre7L._AC_SL1500_.jpg",
+    unavailable: false
+  },
+  {
+    name: "Lixeira",
+    link: "https://www.amazon.com.br/Lixeira-Inox-Litros-Balde-Remov%C3%ADvel/dp/B09J419PKP",
+    image: "https://m.media-amazon.com/images/I/41M-SiiTnwL._SL1000_.jpg",
+    unavailable: false
+  },
+  {
+    name: "Porta Tempero",
+    link: "https://www.amazon.com.br/Condimentos-Girat%C3%B3rio-Frascos-Cromado-FUTURO/dp/B08QM88LFJ",
+    image: "https://m.media-amazon.com/images/I/6197aVY5W1L._AC_SL1200_.jpg",
+    unavailable: false
+  },
+  {
+    name: "Escorredor de Pratos",
+    link: "https://www.amazon.com.br/Escorredor-Lou%C3%A7a-Pratos-Talher-Metaltru/dp/B095NHGPNG",
+    image: "https://m.media-amazon.com/images/I/51ypMtPGVjL._AC_SL1000_.jpg",
+    unavailable: false
+  },
+  {
+    name: "Smart TV 55\"",
+    link: "https://www.lg.com/br/tvs-e-soundbars/tv-uhd-4k/55ut8000psa",
+    image: "https://www.lg.com/content/dam/channel/wcms/br/images/tv/55ut8000psa/gallery/uhd-ut80-65-55-50-a-gallery-01-v21.jpg/_jcr_content/renditions/thum-1600x1062.jpeg",
+    unavailable: false
+  },
+  {
+    name: "Banquetas",
+    link: "https://www.amazon.com.br/Banquetas-Altas-Cozinha-Balc%C3%A3o-Carraro/dp/B0CYTK33RZ",
+    image: "https://m.media-amazon.com/images/I/51zVxxIQI9L._AC_SL1000_.jpg",
+    unavailable: false
+  },
+  {
+    name: "Cama de Casal Baú",
+    link: "https://www.leroymerlin.com.br/cama-box-bau-casal-com-colchao-de-espuma-d33-millenium-one-face-bege-ate-120kg---2-trav_1571903935",
+    image: "https://cdn.leroymerlin.com.br/products/cama_box_bau_casal_com_colchao_de_espuma_d33_millenium_one_fa_1571903935_46ed_600x600.jpg",
+    unavailable: false
+  },
+  {
+    name: "Travesseiros",
+    link: "https://www.amazon.com.br/Travesseiros-Nasa-Viscoel%C3%A1stico-Altura-10cm/dp/B0BMY15LM9",
+    image: "https://m.media-amazon.com/images/I/61RuNRfgKML._AC_SX679_.jpg",
+    unavailable: false
+  },
+  {
+    name: "Toalhas",
+    link: "https://www.centraltoalhas.com.br/kit-4-toalha-gigante-banhao-fio-penteado-100-algodao-twist-chumbo",
+    image: "https://centraltoalhas.cdn.magazord.com.br/img/2023/10/produto/6383/cinza.jpg?ims=800x800",
+    unavailable: false
+  },
+  {
+    name: "Espelho para banheiro",
+    link: "https://www.mercadolivre.com.br/espelho-oval-decorativo-60x40-com-borda-em-couro-suporte-moldura-preto/p/MLB43696556",
+    image: "https://http2.mlstatic.com/D_NQ_NP_965601-MLA80924356439_112024-O.webp",
+    unavailable: false
+  },
+  {
+    name: "Cesto de Roupa Suja",
+    link: "https://www.amazon.com.br/Retangular-Forrado-Roupas-Banheiro-Lavanderia/dp/B0CP31RBDK",
+    image: "https://m.media-amazon.com/images/I/61pHQn0HEmL._AC_SX679_.jpg",
+    unavailable: false
+  },
+  {
+    name: "Varal de Chão",
+    link: "https://www.amazon.com.br/Varal-Ch%C3%A3o-Abas-Slim-Preto/dp/B091BG8F99",
+    image: "https://m.media-amazon.com/images/I/51ucwKgEA4L._AC_SX569_.jpg",
+    unavailable: false
+  },
+  {
+    name: "Mesa 4 lugares",
+    link: "https://www.casasbahia.com.br/conjunto-sala-de-jantar-retangular-mesa-helo-120cm-e-04-cadeiras-josi-poliman-moveis-bege-claro/p/1570944561",
+    image: "https://imgs.casasbahia.com.br/1570944561/1xg.jpg?imwidth=500",
+    unavailable: false
+  },
+  {
+    name: "Lençol",
+    link: "https://www.centraltoalhas.com.br/kit-com-2-lencol-de-malha-casal-com-elastico-100-algodao-rubi-kit-3",
+    image: "https://centraltoalhas.cdn.magazord.com.br/img/2024/12/produto/7112/lencol-100-algodao-liso-kit-2-kit-3.jpg?ims=800x800",
+    unavailable: false
+  },
+  {
+    name: "Cobre Leito",
+    link: "https://www.lindacasa.com.br/cobre-leito-casal-3-pecas-pastilhas-verde/p",
+    image: "https://images.yampi.me/assets/stores/lindacasa/uploads/images/kit-cobre-leito-colcha-casal-3-pecas-boutis-pastilhas-dupla-face-micro-percal-150-fios-matelado-verde-67daa09f67e10-small.jpg",
+    unavailable: false
+  },
+  {
+    name: "Cabeceira Casal",
+    link: "https://www.casasbahia.com.br/cabeceira-casal-queen-com-2-mesas-de-cabeceira-232cm-multimoveis-mp4317-madeirado-madeirado/p/1570477220",
+    image: "https://imgs.casasbahia.com.br/1570477220/1xg.jpg?imwidth=500",
+    unavailable: false
+  },
+  {
+    name: "Edredom Casal",
+    link: "https://www.magazineluiza.com.br/edredom-sherpa-cobertor-e-coberdrom-casal-queen-grosso-luckbaby/p/bj55he0h0b/cm/cobd",
+    image: "https://a-static.mlcdn.com.br/800x560/edredom-sherpa-cobertor-e-coberdrom-casal-queen-grosso-luckbaby/rafaelrosavariedades/58b3db7c43e611edbb2d4201ac185019/70b984e9b1521b41a2d2d610a8753923.jpeg",
+    unavailable: false
+  }
+];
 
     function saveGifts() {
       localStorage.setItem('gifts', JSON.stringify(gifts));
